@@ -260,7 +260,12 @@ public class TicketManager {
     }
 
     protected static void printAllTickets(LinkedList<Ticket> tickets) {
-        System.out.println(" ------- All open tickets ----------");
+        if (tickets.isEmpty()) {
+            // say there are no tickets and exit printAllTickets
+            System.out.println("No tickets in queue!");
+            return;
+        }
+        System.out.printf(" ------- All %s tickets ----------\n", tickets.get(0).getStatus());
         for (Ticket t : tickets) {
             System.out.println(t); //Write a toString method in Ticket class
 //println will try to call toString on its argument
