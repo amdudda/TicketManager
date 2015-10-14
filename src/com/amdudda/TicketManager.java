@@ -29,18 +29,18 @@ public class TicketManager {
                     break;
                 }
                 case 2: {
-                    //delete a ticket
+                    //delete a ticket by ID
                     deleteTicket(ticketQueue);
                     break;
                 }
                 case 3: {
-                    //delete a ticket
-                    deleteTicket(ticketQueue);
+                    //delete a ticket by Issue
+                    searchByIssue(ticketQueue);
                     break;
                 }
                 case 4: {
-                    //delete a ticket
-                    deleteTicket(ticketQueue);
+                    //Find a ticket by reporter's name
+                    searchByName(ticketQueue);
                     break;
                 }
                 case 6: {
@@ -61,6 +61,50 @@ public class TicketManager {
 
         scan.close();
     }
+
+    private static void searchByName(LinkedList<Ticket> tQ) {
+        LinkedList<Ticket> searchResults = new LinkedList<Ticket>();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter a string to search for in the \"reporter\" field:");
+        String name = input.nextLine();
+        for (Ticket t:tQ) {
+            if (t.getReporter().contains(name)) {
+                // if the description contains the search string, add it to searchResults list
+                searchResults.add(t);
+            }
+        } // end for each
+
+        if (searchResults.isEmpty()) {
+            // if nothing was found, tell the user that.
+            System.out.println("No matches found.");
+        } else {
+            //
+            printAllTickets(searchResults);
+        } // end if-else
+
+    } // end searchByName
+
+    private static void searchByIssue(LinkedList<Ticket> tQ) {
+        LinkedList<Ticket> searchResults = new LinkedList<Ticket>();
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter a string to search for in the \"description\" field:");
+        String desc = input.nextLine();
+        for (Ticket t:tQ) {
+            if (t.getDescription().contains(desc)) {
+                // if the description contains the search string, add it to searchResults list
+                searchResults.add(t);
+            }
+        } // end for each
+
+        if (searchResults.isEmpty()) {
+            // if nothing was found, tell the user that.
+            System.out.println("No matches found.");
+        } else {
+            //
+            printAllTickets(searchResults);
+        } // end if-else
+
+    } // end searchByName
 
     protected static void deleteTicket(LinkedList<Ticket> ticketQueue) {
         //What to do here? Need to delete ticket, but how do we identify the ticket to delete?
