@@ -69,7 +69,7 @@ public class TicketManager {
         printAllTickets(ticketQueue);
 
         // close our scanner
-        deleteScanner.close();
+        // deleteScanner.close();
     }
 
     //Move the adding ticket code to a method
