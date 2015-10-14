@@ -9,11 +9,11 @@ import java.util.*;
 public class TicketManager {
 
     /*
-    make ticketQueue a public variable so I can modify ticketQueue
+    I made ticketQueue a public variable so I can modify ticketQueue
     when I need to delete stuff from it, rather than refactoring
     everything to pass two LinkedList variables.
     */
-    public static LinkedList<Ticket> ticketQueue;
+    private static LinkedList<Ticket> ticketQueue;
 
     public static void main(String[] args) {
         ticketQueue = new LinkedList<Ticket>();
