@@ -1,8 +1,6 @@
 package com.amdudda;
 
-import java.io.IOException;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
 
 /*
     Base code copied from lab slides
@@ -10,8 +8,15 @@ import java.util.concurrent.ExecutionException;
 
 public class TicketManager {
 
+    /*
+    make ticketQueue a public variable so I can modify ticketQueue
+    when I need to delete stuff from it, rather than refactoring
+    everything to pass two LinkedList variables.
+    */
+    public static LinkedList<Ticket> ticketQueue;
+
     public static void main(String[] args) {
-        LinkedList<Ticket> ticketQueue = new LinkedList<Ticket>();
+        ticketQueue = new LinkedList<Ticket>();
         Scanner scan = new Scanner(System.in);
         boolean keepgoing = true;
         while (keepgoing) {
@@ -35,7 +40,7 @@ public class TicketManager {
                 }
                 case 3: {
                     //delete a ticket by Issue
-                    searchByIssue(ticketQueue);
+                    deleteByIssue(ticketQueue);
                     break;
                 }
                 case 4: {
@@ -84,7 +89,7 @@ public class TicketManager {
 
     } // end searchByName
 
-    private static void searchByIssue(LinkedList<Ticket> tQ) {
+    private static LinkedList<Ticket> searchByIssue(LinkedList<Ticket> tQ) {
         LinkedList<Ticket> searchResults = new LinkedList<Ticket>();
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a string to search for in the \"description\" field:");
@@ -96,22 +101,25 @@ public class TicketManager {
             }
         } // end for each
 
+        /* retained for debugging purposes
         if (searchResults.isEmpty()) {
             // if nothing was found, tell the user that.
             System.out.println("No matches found.");
         } else {
-            //
             printAllTickets(searchResults);
         } // end if-else
+        */
+
+        return searchResults;
 
     } // end searchByName
 
-    protected static void deleteTicket(LinkedList<Ticket> ticketQueue) {
+    private static void deleteTicket(LinkedList<Ticket> tQ) {
         //What to do here? Need to delete ticket, but how do we identify the ticket to delete?
         //DONE: implement this method
-        printAllTickets(ticketQueue);
+        printAllTickets(tQ);
         // DONE – re-write this method to ask for ID again if not found
-        if (ticketQueue.size() == 0) {
+        if (tQ.size() == 0) {
             // if no tickets available to delete say so and exit the method
             System.out.println("No tickets to delete!\n");
             return;
@@ -154,20 +162,33 @@ public class TicketManager {
 
             if (!found) {
                 System.out.println("Ticket ID not found.  Please enter an existing ticket number.");
-                printAllTickets(ticketQueue);
+                printAllTickets(tQ);
             }
 
         }  // end while-not-found loop
 
         // print updated list of tickets
-        printAllTickets(ticketQueue);
+        printAllTickets(tQ);
 
         // close our scanner
         // deleteScanner.close();
     }
 
+    private static void deleteByIssue(LinkedList<Ticket> tQ) {
+        // first get the list of issues the user wants to work with
+        LinkedList<Ticket> matchingIssues = searchByIssue(tQ);
+        // then take advantage of deleteTicket to let the user pick
+        // the ticket # they actually want to delete.
+        if (matchingIssues.isEmpty()) {
+            System.out.println("No matches found!");
+            return;
+        } else {
+            deleteTicket(matchingIssues);
+        }
+    }
+
     //Move the adding ticket code to a method
-    protected static void addTickets(LinkedList<Ticket> ticketQueue) {
+    protected static void addTickets(LinkedList<Ticket> tQ) {
         Scanner sc = new Scanner(System.in);
         boolean moreProblems = true;
         String description;
@@ -184,9 +205,9 @@ public class TicketManager {
             priority = Integer.parseInt(sc.nextLine());
             Ticket t = new Ticket(description, priority, reporter, dateReported);
             // ticketQueue.add(t);
-            addTicketInPriorityOrder(ticketQueue, t);
+            addTicketInPriorityOrder(tQ, t);
             //To test, let's print out all of the currently stored tickets
-            printAllTickets(ticketQueue);
+            printAllTickets(tQ);
             System.out.println("More tickets to add?");
             String more = sc.nextLine();
             if (more.equalsIgnoreCase("N")) {
