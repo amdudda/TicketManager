@@ -1,12 +1,15 @@
 package com.amdudda;
 
+import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.ExecutionException;
 
 /*
     Base code copied from lab slides
  */
 
 public class TicketManager {
+
     public static void main(String[] args) {
         LinkedList<Ticket> ticketQueue = new LinkedList<Ticket>();
         Scanner scan = new Scanner(System.in);
@@ -34,36 +37,57 @@ public class TicketManager {
     }
 
     protected static void deleteTicket(LinkedList<Ticket> ticketQueue) {
-//What to do here? Need to delete ticket, but how do we identify the ticket to delete?
-//TODO implement this method
-        //System.out.println("Delete tickets method called");
+        //What to do here? Need to delete ticket, but how do we identify the ticket to delete?
+        //DONE: implement this method
         printAllTickets(ticketQueue);
+        // DONE – re-write this method to ask for ID again if not found
         if (ticketQueue.size() == 0) {
             // if no tickets available to delete say so and exit the method
             System.out.println("No tickets to delete!\n");
             return;
         }
 
-        // get user to pick a ticket to delete
-        Scanner deleteScanner = new Scanner(System.in);
-        System.out.println("Enter ID of ticket to delete:");
-        int deleteID = deleteScanner.nextInt();
-
-        // loop through the tickets and see if there is a match
+        // Problem 2, part a
         boolean found = false;
-        for (Ticket t : ticketQueue) {
-            // if a match found, delete it and set found to true
-            if (t.getTicketID() == deleteID) {
-                found = true;
-                ticketQueue.remove(t);
+        while (!found) {
+            // get user to pick a ticket to delete
+            Scanner deleteScanner = new Scanner(System.in);
+            // Problem 2, part b
+            boolean valid_input = false;
+            int deleteID = -1;  // set it to negative so if something goes wrong, it's obvious.
+            while (!valid_input) {
+                try {
+                    System.out.println("Enter ID of ticket to delete:");
+                    deleteID = deleteScanner.nextInt();
+                    if (deleteID > 0) { valid_input = true; }
+                    else {
+                        // this lets me use my exception code if someone tries a negative number.
+                        throw new Exception();
+                    }
+                } catch (Exception e) {
+                    // report the error - we don't really care about specific error types,
+                    // just that we don't have valid input
+                    System.out.println("That is not a valid ticket ID.  Please try again.");
+                    // and clear the scanner
+                    deleteScanner.nextLine();
+                } // end try-catch block
+            } // end while-not-valid loop
+
+            // loop through the tickets and see if there is a match
+            for (Ticket t : ticketQueue) {
+                // if a match found, delete it and set found to true
+                if (t.getTicketID() == deleteID) {
+                    found = true;
+                    ticketQueue.remove(t);
+                }
             }
-        }
 
-        if (!found) {
-            System.out.println("Ticket ID not found, no ticket deleted.");
-        }
+            if (!found) {
+                System.out.println("Ticket ID not found.  Please enter an existing ticket number.");
+                printAllTickets(ticketQueue);
+            }
 
-        //TODO – re-write this method to ask for ID again if not found
+        }  // end while-not-found loop
 
         // print updated list of tickets
         printAllTickets(ticketQueue);
@@ -90,7 +114,7 @@ public class TicketManager {
             priority = Integer.parseInt(sc.nextLine());
             Ticket t = new Ticket(description, priority, reporter, dateReported);
             // ticketQueue.add(t);
-            addTicketInPriorityOrder(ticketQueue,t);
+            addTicketInPriorityOrder(ticketQueue, t);
             //To test, let's print out all of the currently stored tickets
             printAllTickets(ticketQueue);
             System.out.println("More tickets to add?");
@@ -111,7 +135,7 @@ public class TicketManager {
         //Tickets with the LOWEST value of their priority number (so the lowest priority) go at the end
         int newTicketPriority = newTicket.getPriority();
         for (int x = 0; x < tickets.size(); x++) { //use a regular for loop so we know which element we are looking at
-        //if newTicket is higher or equal priority than the this element, add it in front of this one, and return
+            //if newTicket is higher or equal priority than the this element, add it in front of this one, and return
             if (newTicketPriority >= tickets.get(x).getPriority()) {
                 tickets.add(x, newTicket);
                 return;
