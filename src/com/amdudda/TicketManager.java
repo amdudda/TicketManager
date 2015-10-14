@@ -14,9 +14,11 @@ public class TicketManager {
     everything to pass two LinkedList variables.
     */
     private static LinkedList<Ticket> ticketQueue;
+    private static LinkedList<Ticket> resolvedTickets;
 
     public static void main(String[] args) {
         ticketQueue = new LinkedList<Ticket>();
+        resolvedTickets = new LinkedList<Ticket>();
         Scanner scan = new Scanner(System.in);
         boolean keepgoing = true;
         while (keepgoing) {
@@ -156,7 +158,9 @@ public class TicketManager {
                 // if a match found, delete it and set found to true
                 if (t.getTicketID() == deleteID) {
                     found = true;
-                    ticketQueue.remove(t);
+                    // ticketQueue.remove(t);
+                    // problem 5: method to move tickets to Resolved queue
+                    resolveTicket(t);
                 }
             }
 
@@ -172,6 +176,24 @@ public class TicketManager {
 
         // close our scanner
         // deleteScanner.close();
+    }
+
+    private static void resolveTicket(Ticket t) {
+        // takes a ticket, marks it as resolved, gathers resolution data, and moves it to resolvedTickets linkedlist
+        Scanner r = new Scanner(System.in);
+        // mark the ticket as resolved and use the current time stamp as the resolution date
+        t.setStatus("resolved");
+        t.setDateResolved(new Date());
+        // have the user enter a resolution for the issue
+        System.out.println("Enter a resolution for the ticket:");
+        String resolution = r.nextLine();
+        t.setResolution(resolution);
+
+        // add the ticket to resolved tickets and remove it from the ticket queue.
+        resolvedTickets.add(t);
+        // testing
+        printAllTickets(resolvedTickets);
+        ticketQueue.remove(t);
     }
 
     private static void deleteByIssue(LinkedList<Ticket> tQ) {

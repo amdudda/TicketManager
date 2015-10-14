@@ -20,6 +20,10 @@ public class Ticket {
     private static int staticTicketIDCounter = 1;
     //The ID for each ticket - instance variable. Each Ticket will have it's own ticketID variable
     protected int ticketID;
+    // added these in response to Problem 5.
+    private String status;  // not required by question, but prompted by my response to essay portion.
+    private String resolution;
+    private Date dateResolved;
 
     // constructor
     public Ticket(String desc, int p, String rep, Date date) {
@@ -27,6 +31,7 @@ public class Ticket {
         this.priority = p;
         this.reporter = rep;
         this.dateReported = date;
+        this.status = "active";
         this.ticketID = staticTicketIDCounter;
         staticTicketIDCounter++;
     }
@@ -43,6 +48,32 @@ public class Ticket {
     protected String getDescription() { return this.description; }
 
     protected String getReporter() { return this.reporter; }
+
+    // new getters & setters for resolved ticket values
+    protected Date getDateResolved() {
+        return dateResolved;
+    }
+
+    public void setDateResolved(Date dateResolved) {
+        this.dateResolved = dateResolved;
+    }
+
+    protected String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    protected String getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(String resolution) {
+        this.resolution = resolution;
+    }
+    // end getters & setters for Problem 5
 
     public String toString(){
         return("ID= " + this.ticketID + " Issued: " + this.description + " Priority: " + this.priority + " Reported by: "
