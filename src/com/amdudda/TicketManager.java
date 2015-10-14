@@ -13,26 +13,52 @@ public class TicketManager {
     public static void main(String[] args) {
         LinkedList<Ticket> ticketQueue = new LinkedList<Ticket>();
         Scanner scan = new Scanner(System.in);
-        while (true) {
-            System.out.println("1. Enter Ticket\n2. Delete Ticket\n3. Display All Tickets\n4. Quit");
+        boolean keepgoing = true;
+        while (keepgoing) {
+            System.out.println("1. Enter Ticket\n" +
+                    "2. Delete by ID\n" +
+                    "3. Delete by Issue\n" +
+                    "4. Search by Name\n" +
+                    "5. Display All Tickets\n" +
+                    "6. Quit");
             int task = Integer.parseInt(scan.nextLine());
-            if (task == 1) {
-//Call addTickets, which will let us enter any number of new tickets
-                addTickets(ticketQueue);
-            } else if (task == 2) {
-//delete a ticket
-                deleteTicket(ticketQueue);
-            } else if (task == 4) {
-//Quit. Future prototype may want to save all tickets to a file
-                System.out.println("Quitting program");
-                break;
-            } else {
-//this will happen for 3 or any other selection that is a valid int
-//TODO Program crashes if you enter anything else - please fix
-//Default will be print all tickets
-                printAllTickets(ticketQueue);
-            }
-        }
+            switch (task) {
+                case 1: {
+                    //Call addTickets, which will let us enter any number of new tickets
+                    addTickets(ticketQueue);
+                    break;
+                }
+                case 2: {
+                    //delete a ticket
+                    deleteTicket(ticketQueue);
+                    break;
+                }
+                case 3: {
+                    //delete a ticket
+                    deleteTicket(ticketQueue);
+                    break;
+                }
+                case 4: {
+                    //delete a ticket
+                    deleteTicket(ticketQueue);
+                    break;
+                }
+                case 6: {
+                    //Quit. Future prototype may want to save all tickets to a file
+                    System.out.println("Quitting program");
+                    keepgoing = false;
+                    break;
+                }
+                default: {
+                    //this will happen for 3 or any other selection that is a valid int
+                    //TODO Program crashes if you enter anything else - please fix
+                    //Default will be print all tickets
+                    printAllTickets(ticketQueue);
+                }
+            } // end switch-case
+
+        } // end while-keepgoing
+
         scan.close();
     }
 
