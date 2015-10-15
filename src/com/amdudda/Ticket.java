@@ -2,6 +2,8 @@ package com.amdudda;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.*;
 
 /*
@@ -46,7 +48,7 @@ public class Ticket {
         this.reporter = data.get(3);
         this.dateReported = LocalDateTime.parse(data.get(4));
         this.status = data.get(5);
-        // last two values should be null, so we're not bothering to set that
+        // last two values should be null, so I'm not bothering to set them
     }
 
     // getters
@@ -89,10 +91,13 @@ public class Ticket {
     // end getters & setters for Problem 5
 
     public String toString(){
+        /*LocalDateTime dR = this.dateResolved;
+        String f_date = "" + dR.getMonth() + "-" + dR.getDayOfMonth() + "-" + dR.getYear();
+        f_date += " " + dateReported.getHour() + ":" + dateReported.getMinute();*/
         return("ID= " + this.ticketID + " Issued: " + this.description + " Priority: " + this.priority + " Reported by: "
                 + this.reporter + " Reported on: " + this.dateReported +
-                " Status: " + this.status + " Resolved on: " + this.dateResolved
-                + " Resolution: " + this.resolution);
+                " Status: " + this.status + " Resolved on: " +
+                this.dateReported + " Resolution: " + this.resolution);
     }
 
     public String toTabDelimited() {

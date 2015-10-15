@@ -82,10 +82,11 @@ public class TicketManager {
         // location of our file is expected to be in package's data subdirectory
         String fpath = "./data/open_tickets.txt";
 
-        // set up our filestreams
-        File f = new File(fpath);
-        FileReader fR = new FileReader(f);
-        BufferedReader bR = new BufferedReader(fR);
+        try {
+            // set up our filestreams
+            File f = new File(fpath);
+            FileReader fR = new FileReader(f);
+            BufferedReader bR = new BufferedReader(fR);
 
         // read in the first line of data
         String line = bR.readLine();
@@ -93,13 +94,28 @@ public class TicketManager {
         // Margaret and Malcolm clued me in to using Collections to turn a string into an array
         // googling got me this page which showed me how: http://javarevisited.blogspot.com/2011/06/converting-array-to-arraylist-in-java.html
         while (line != null) {
+            // read in the data
             ArrayList<String> attribs = new ArrayList<>();
             Collections.addAll(attribs, line.split("\t"));
+            // create a new ticket object and add it to ticketQueue
+            Ticket t = new Ticket(attribs);
+            ticketQueue.add(t);
+            // read the next line
+            line = bR.readLine();
         }
 
         // close our filestreams
         bR.close();
         fR.close();
+        }
+        catch (FileNotFoundException fnfe) {
+            // if the file isn't found, return back to the program without reading any data
+            return;
+        }
+        catch (Exception e) {
+            System.out.println("The file exists, but something else is wrong with it.");
+            System.out.println(e);
+        }
     }
 
     private static void writeTicketData() throws IOException {
