@@ -25,7 +25,7 @@ public class Ticket {
     private String resolution;
     private Date dateResolved;
 
-    // constructor
+    // constructor for manual input
     public Ticket(String desc, int p, String rep, Date date) {
         this.description = desc;
         this.priority = p;
@@ -35,6 +35,8 @@ public class Ticket {
         this.ticketID = staticTicketIDCounter;
         staticTicketIDCounter++;
     }
+
+    // TODO: constructor for array input
 
     // getters
     protected int getPriority() {
@@ -83,6 +85,7 @@ public class Ticket {
     }
 
     public String toTabDelimited() {
+        // generates a tab-delimited string that can be written to a file
         return(this.ticketID + "\t" + this.description + "\t" + this.priority +
                 "\t" + this.reporter + "\t" + this.dateReported +
                 "\t"+ this.status + "\t" + this.dateResolved
