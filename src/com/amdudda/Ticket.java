@@ -49,6 +49,9 @@ public class Ticket {
         this.dateReported = LocalDateTime.parse(data.get(4));
         this.status = data.get(5);
         // last two values should be null, so I'm not bothering to set them
+        // but we want to make sure whatever the next new ticket number is, it's a brand new one
+        // easiest way to do thatis to make sure that staticTicketIDCounter is larger than current ticket number
+        if (this.ticketID >= staticTicketIDCounter) { staticTicketIDCounter = this.ticketID + 1; }
     }
 
     // getters
