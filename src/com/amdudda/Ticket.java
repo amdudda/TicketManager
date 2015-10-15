@@ -77,8 +77,16 @@ public class Ticket {
 
     public String toString(){
         return("ID= " + this.ticketID + " Issued: " + this.description + " Priority: " + this.priority + " Reported by: "
-                + this.reporter + " Reported on: " + this.dateReported);
+                + this.reporter + " Reported on: " + this.dateReported +
+                " Status: " + this.status + " Resolved on: " + this.dateResolved
+                + " Resolution: " + this.resolution);
     }
 
+    public String toTabDelimited() {
+        return("\t" + this.ticketID + "\t" + this.description + "\t" + this.priority +
+                "\t" + this.reporter + "\t" + this.dateReported +
+                "\t"+ this.status + "\t" + this.dateResolved
+                + "\t" + this.resolution + "\n");
+    }
 }
 

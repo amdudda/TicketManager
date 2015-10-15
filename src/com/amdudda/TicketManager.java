@@ -1,5 +1,11 @@
 package com.amdudda;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
 
 /*
@@ -16,7 +22,7 @@ public class TicketManager {
     private static LinkedList<Ticket> ticketQueue;
     private static LinkedList<Ticket> resolvedTickets;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         ticketQueue = new LinkedList<Ticket>();
         resolvedTickets = new LinkedList<Ticket>();
         Scanner scan = new Scanner(System.in);
@@ -53,6 +59,7 @@ public class TicketManager {
                 case 6: {
                     //Quit. Future prototype may want to save all tickets to a file
                     System.out.println("Quitting program");
+                    writeTicketData();  // doesn't need to pass anything - the two linkedlists are global variables
                     keepgoing = false;
                     break;
                 }
@@ -67,6 +74,46 @@ public class TicketManager {
         } // end while-keepgoing
 
         scan.close();
+    }
+
+    private static void writeTicketData() throws IOException {
+        // writes ticket data to files at program close
+        // need to consider how to store it so we can read the data in again later.
+        // info on date time extraction adduced from https://docs.oracle.com/javase/8/docs/api/index.html?java/time/LocalDate.html
+        // format with leading zeroes taken from http://stackoverflow.com/questions/4051887/how-to-format-a-java-string-with-leading-zero
+        // generate a time stamp for our resolved tickets output
+        LocalDate datestamp = LocalDate.now();
+        LocalTime hourstamp = LocalTime.now();
+        String timestamp = String.format("%s-%02d%02d\n",datestamp, hourstamp.getHour(), hourstamp.getMinute());
+        System.out.println(timestamp);
+
+        // create the filenames for our reports
+        String fpath = "./data/";  // data directory to store output to
+        String resolvedPath = fpath + "ResolvedTickets" + timestamp + ".txt";
+        String openPath = fpath + "open_tickets.txt";
+
+        // and generate the output data - let's create a single module that we call twice
+        // once for resolved tickets and once for open tickets
+        generateReport(resolvedPath,resolvedTickets);
+        generateReport(openPath,ticketQueue);
+    }
+
+    private static void generateReport(String destination, LinkedList<Ticket> queue) throws IOException {
+        // writes out a report of tickets to the designated file
+        // create our output streams
+        File f = new File(destination);
+        FileWriter fW = new FileWriter(f);
+        BufferedWriter bW = new BufferedWriter(fW);
+
+        // for each ticket in the designated queue, gather its attributes in tab-delimited format
+        // and write it to the destination file.
+        for (Ticket t:queue) {
+            bW.write(t.toTabDelimited());
+        }
+
+        // close our data streams
+        bW.close();
+        fW.close();
     }
 
     private static void searchByName(LinkedList<Ticket> tQ) {
