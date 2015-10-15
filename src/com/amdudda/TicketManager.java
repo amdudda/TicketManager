@@ -2,6 +2,7 @@ package com.amdudda;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.*;
 
@@ -22,6 +23,9 @@ public class TicketManager {
     public static void main(String[] args) throws IOException {
         ticketQueue = new LinkedList<Ticket>();
         resolvedTickets = new LinkedList<Ticket>();
+
+        readTicketData();
+
         Scanner scan = new Scanner(System.in);
         boolean keepgoing = true;
         while (keepgoing) {
@@ -73,6 +77,31 @@ public class TicketManager {
         scan.close();
     }
 
+    private static void readTicketData() throws IOException {
+        // reads in data from open_tickets.txt
+        // location of our file is expected to be in package's data subdirectory
+        String fpath = "./data/open_tickets.txt";
+
+        // set up our filestreams
+        File f = new File(fpath);
+        FileReader fR = new FileReader(f);
+        BufferedReader bR = new BufferedReader(fR);
+
+        // read in the first line of data
+        String line = bR.readLine();
+
+        // Margaret and Malcolm clued me in to using Collections to turn a string into an array
+        // googling got me this page which showed me how: http://javarevisited.blogspot.com/2011/06/converting-array-to-arraylist-in-java.html
+        while (line != null) {
+            ArrayList<String> attribs = new ArrayList<>();
+            Collections.addAll(attribs, line.split("\t"));
+        }
+
+        // close our filestreams
+        bR.close();
+        fR.close();
+    }
+
     private static void writeTicketData() throws IOException {
         // writes ticket data to files at program close
         // need to consider how to store it so we can read the data in again later.
@@ -100,6 +129,12 @@ public class TicketManager {
         File f = new File(destination);
         FileWriter fW = new FileWriter(f);
         BufferedWriter bW = new BufferedWriter(fW);
+
+        // write the header column so we can read that in for our data generation
+        /* dropping this - we don't need the header info after all
+        bW.write("ticketID\tdescription\tpriority\treporter\tdateReported\t"
+                + "status\tdateResolved\tresolution\n");
+        */
 
         // for each ticket in the designated queue, gather its attributes in tab-delimited format
         // and write it to the destination file.
@@ -228,7 +263,7 @@ public class TicketManager {
         Scanner r = new Scanner(System.in);
         // mark the ticket as resolved and use the current time stamp as the resolution date
         t.setStatus("resolved");
-        t.setDateResolved(new Date());
+        t.setDateResolved(LocalDateTime.now());
         // have the user enter a resolution for the issue
         System.out.println("Enter a resolution for the ticket:");
         String resolution = r.nextLine();
@@ -259,7 +294,7 @@ public class TicketManager {
         String description;
         String reporter;
         //let's assume all tickets are created today, for testing. We can change this later if needed
-        Date dateReported = new Date(); //Default constructor creates date with current date/time
+        LocalDateTime dateReported = LocalDateTime.now(); //Default constructor creates date with current date/time
         int priority;
         while (moreProblems) {
             System.out.println("Enter problem");

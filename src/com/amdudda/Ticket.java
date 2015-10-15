@@ -1,19 +1,21 @@
 package com.amdudda;
-import java.util.Date;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.*;
 
 /*
     Base code copied from lab slides
  */
 
 import java.util.Date;
-import java.util.LinkedList;
 
 public class Ticket {
 
     private int priority;
     private String reporter; //Stores person or department who reported issue
     private String description;
-    private Date dateReported;
+    private LocalDateTime dateReported;
     //STATIC Counter - accessible to all Ticket objects.
     //If any Ticket object modifies this counter, all Ticket objects will have the modified value
     //Make it private - only Ticket objects should have access
@@ -23,10 +25,10 @@ public class Ticket {
     // added these in response to Problem 5.
     private String status;  // not required by question, but prompted by my response to essay portion.
     private String resolution;
-    private Date dateResolved;
+    private LocalDateTime dateResolved;
 
     // constructor for manual input
-    public Ticket(String desc, int p, String rep, Date date) {
+    public Ticket(String desc, int p, String rep, LocalDateTime date) {
         this.description = desc;
         this.priority = p;
         this.reporter = rep;
@@ -36,7 +38,16 @@ public class Ticket {
         staticTicketIDCounter++;
     }
 
-    // TODO: constructor for array input
+    // constructor for array input - yes, I'm overloading it.
+    public Ticket(ArrayList<String> data) {
+        this.ticketID = Integer.parseInt(data.get(0));
+        this.description = data.get(1);
+        this.priority = Integer.parseInt(data.get(2));
+        this.reporter = data.get(3);
+        this.dateReported = LocalDateTime.parse(data.get(4));
+        this.status = data.get(5);
+        // last two values should be null, so we're not bothering to set that
+    }
 
     // getters
     protected int getPriority() {
@@ -52,11 +63,11 @@ public class Ticket {
     protected String getReporter() { return this.reporter; }
 
     // new getters & setters for resolved ticket values
-    protected Date getDateResolved() {
+    protected LocalDateTime getDateResolved() {
         return dateResolved;
     }
 
-    public void setDateResolved(Date dateResolved) {
+    public void setDateResolved(LocalDateTime dateResolved) {
         this.dateResolved = dateResolved;
     }
 
