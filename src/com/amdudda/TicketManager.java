@@ -1,9 +1,6 @@
 package com.amdudda;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
@@ -64,7 +61,7 @@ public class TicketManager {
                     break;
                 }
                 default: {
-                    //this will happen for 3 or any other selection that is a valid int
+                    //this will happen for 5 or any other selection that is a valid int
                     //TODO Program crashes if you enter anything else - please fix
                     //Default will be print all tickets
                     printAllTickets(ticketQueue);
@@ -85,12 +82,11 @@ public class TicketManager {
         LocalDate datestamp = LocalDate.now();
         LocalTime hourstamp = LocalTime.now();
         String timestamp = String.format("%s-%02d%02d\n",datestamp, hourstamp.getHour(), hourstamp.getMinute());
-        System.out.println(timestamp);
 
         // create the filenames for our reports
-        String fpath = "./data/";  // data directory to store output to
-        String resolvedPath = fpath + "ResolvedTickets" + timestamp + ".txt";
-        String openPath = fpath + "open_tickets.txt";
+        String dir = "./data/";  // data directory to store output to
+        String resolvedPath = dir + "ResolvedTickets" + timestamp + ".txt";
+        String openPath = dir + "open_tickets.txt";
 
         // and generate the output data - let's create a single module that we call twice
         // once for resolved tickets and once for open tickets
@@ -111,6 +107,7 @@ public class TicketManager {
             bW.write(t.toTabDelimited());
         }
 
+        System.out.println("Report written to " + destination);
         // close our data streams
         bW.close();
         fW.close();
@@ -208,6 +205,7 @@ public class TicketManager {
                     // ticketQueue.remove(t);
                     // problem 5: method to move tickets to Resolved queue
                     resolveTicket(t);
+                    break;
                 }
             }
 
@@ -238,8 +236,6 @@ public class TicketManager {
 
         // add the ticket to resolved tickets and remove it from the ticket queue.
         resolvedTickets.add(t);
-        // testing
-        printAllTickets(resolvedTickets);
         ticketQueue.remove(t);
     }
 

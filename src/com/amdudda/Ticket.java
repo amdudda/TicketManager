@@ -83,7 +83,7 @@ public class Ticket {
     }
 
     public String toTabDelimited() {
-        return("\t" + this.ticketID + "\t" + this.description + "\t" + this.priority +
+        return(this.ticketID + "\t" + this.description + "\t" + this.priority +
                 "\t" + this.reporter + "\t" + this.dateReported +
                 "\t"+ this.status + "\t" + this.dateResolved
                 + "\t" + this.resolution + "\n");
