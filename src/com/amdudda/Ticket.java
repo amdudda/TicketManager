@@ -1,16 +1,11 @@
 package com.amdudda;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.*;
+import java.util.ArrayList;
 
 /*
     Base code copied from lab slides
  */
-
-import java.util.Date;
 
 public class Ticket {
 
