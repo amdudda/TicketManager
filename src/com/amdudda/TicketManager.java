@@ -33,7 +33,7 @@ public class TicketManager {
                     "2. Delete by ID\n" +
                     "3. Delete by Issue\n" +
                     "4. Search by Name\n" +
-                    "5. Display All Tickets\n" +
+                    "5. Display All Active (Open) Tickets\n" +
                     "6. Quit");
             int task = Integer.parseInt(scan.nextLine());
             switch (task) {
@@ -168,9 +168,9 @@ public class TicketManager {
         LinkedList<Ticket> searchResults = new LinkedList<Ticket>();
         Scanner input = new Scanner(System.in);
         System.out.println("Enter a string to search for in the \"reporter\" field:");
-        String name = input.nextLine();
+        String name = input.nextLine().toLowerCase();
         for (Ticket t:tQ) {
-            if (t.getReporter().contains(name)) {
+            if (t.getReporter().toLowerCase().contains(name)) {
                 // if the description contains the search string, add it to searchResults list
                 searchResults.add(t);
             }
@@ -192,8 +192,9 @@ public class TicketManager {
         System.out.println("Enter a string to search for in the \"description\" field:");
         String desc = input.nextLine();
         for (Ticket t:tQ) {
-            if (t.getDescription().contains(desc)) {
+            if (t.getDescription().toLowerCase().contains(desc.toLowerCase())) {
                 // if the description contains the search string, add it to searchResults list
+                // set it so it ignores case by comparing two lowercase strings
                 searchResults.add(t);
             }
         } // end for each
