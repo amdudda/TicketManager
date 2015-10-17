@@ -92,10 +92,19 @@ public class Ticket {
         /*LocalDateTime dR = this.dateResolved;
         String f_date = "" + dR.getMonth() + "-" + dR.getDayOfMonth() + "-" + dR.getYear();
         f_date += " " + dateReported.getHour() + ":" + dateReported.getMinute();*/
+        String resOut, resDt;
+        if (this.resolution == null) {
+            // this allows for future possibility of previously resolved tickets being reopened.
+            resDt = "n/a";
+            resOut = "UNRESOLVED";
+        } else {
+            resOut = this.resolution;
+            resDt = this.dateResolved.toString();
+        }
         return("ID= " + this.ticketID + " Issued: " + this.description + " Priority: " + this.priority + " Reported by: "
                 + this.reporter + " Reported on: " + this.dateReported +
                 " Status: " + this.status + " Resolved on: " +
-                this.dateReported + " Resolution: " + this.resolution);
+                resDt + " Resolution: " + resOut);
     }
 
     public String toTabDelimited() {

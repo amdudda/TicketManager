@@ -19,23 +19,33 @@ public class TicketManager {
     */
     private static LinkedList<Ticket> ticketQueue;
     private static LinkedList<Ticket> resolvedTickets;
+    private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
         ticketQueue = new LinkedList<Ticket>();
         resolvedTickets = new LinkedList<Ticket>();
-
         readTicketData();
 
-        Scanner scan = new Scanner(System.in);
         boolean keepgoing = true;
+        int task;
         while (keepgoing) {
-            System.out.println("1. Enter Ticket\n" +
+            // get user input - but validate it!
+            while (true) {
+                try {System.out.println("1. Enter Ticket\n" +
                     "2. Delete by ID\n" +
                     "3. Delete by Issue\n" +
                     "4. Search by Name\n" +
-                    "5. Display All Active (Open) Tickets\n" +
+                    "5. Display Tickets\n" +
                     "6. Quit");
-            int task = Integer.parseInt(scan.nextLine());
+
+                    task = Integer.parseInt(scan.nextLine());
+                    if (task <1 || task >6) throw new Exception();
+                    break;
+                } catch (Exception e) {
+                    System.out.println("Please enter a valid option.");
+                    //scan.nextLine();
+                }
+            }
             switch (task) {
                 case 1: {
                     //Call addTickets, which will let us enter any number of new tickets
@@ -66,9 +76,12 @@ public class TicketManager {
                 }
                 default: {
                     //this will happen for 5 or any other selection that is a valid int
-                    //TODO Program crashes if you enter anything else - please fix
+                    //DONE Program crashes if you enter anything else - please fix - implemented error catching
                     //Default will be print all tickets
-                    printAllTickets(ticketQueue);
+                    //printAllTickets(ticketQueue);
+                    // new action is to prompt for which tickets to print
+                    printWhichTickets();
+                    break;
                 }
             } // end switch-case
 
@@ -366,5 +379,33 @@ public class TicketManager {
 //println will try to call toString on its argument
         }
         System.out.println(" ------- End of ticket list ----------");
+    }
+
+    protected static void printWhichTickets() {
+        int choice;
+        System.out.println("Which tickets do you wish to print?\n" +
+                            "1.) All active (open) tickets\n" +
+                            "2.) This session's resolved (closed)  tickets\n" +
+                            "3.) Both 1 & 2");
+        while (true) {
+            try {
+                choice = scan.nextInt();
+                if (choice <1 || choice >3) { throw new Exception(); }
+                break;
+            } catch (Exception e) {
+                System.out.println("You have not made a valid choice.");
+                scan.nextLine();
+            }
+        }
+
+        if (choice == 1) printAllTickets(ticketQueue);
+        else if (choice == 2) printAllTickets(resolvedTickets);
+        else {
+            LinkedList<Ticket> allTickets = new LinkedList<Ticket>();
+            allTickets.addAll(ticketQueue);
+            allTickets.addAll(resolvedTickets);
+            printAllTickets(allTickets);
+        }
+        scan.nextLine();
     }
 }
