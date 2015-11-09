@@ -76,7 +76,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <font size="18"/>
+          <font size="18" style="1"/>
           <text value="Trouble Ticket System"/>
         </properties>
       </component>
