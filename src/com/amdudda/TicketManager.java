@@ -17,14 +17,16 @@ public class TicketManager {
     when I need to delete stuff from it, rather than refactoring
     everything to pass two LinkedList variables.
     */
-    private static LinkedList<Ticket> ticketQueue;
-    private static LinkedList<Ticket> resolvedTickets;
+    public static LinkedList<Ticket> ticketQueue;
+    public static LinkedList<Ticket> resolvedTickets;
     private static Scanner scan = new Scanner(System.in);
 
     public static void main(String[] args) throws IOException {
         ticketQueue = new LinkedList<Ticket>();
         resolvedTickets = new LinkedList<Ticket>();
         readTicketData();
+
+        OptionsMenu optionsMenu = new OptionsMenu();
 
         boolean keepgoing = true;
         int task;
