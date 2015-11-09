@@ -5,6 +5,7 @@ import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by amdudda on 11/9/2015.
@@ -68,6 +69,7 @@ public class OptionsMenu extends JFrame {
 
             }
         });
+
         displayResolvedTicketsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -78,6 +80,34 @@ public class OptionsMenu extends JFrame {
                 for (Ticket t : TicketManager.resolvedTickets) {
                     OptionsMenu.this.ticketListModel.addElement(t);
                 }
+            }
+        });
+
+
+        searchByNameButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OptionsMenu.this.deleteSelectedTicketButton.setEnabled(true);
+                // modified from code in TicketManager
+                ArrayList<Ticket> searchResults = new ArrayList<Ticket>();
+                String name = OptionsMenu.this.searchByNameTextField.getText().toLowerCase();
+                for (Ticket t: TicketManager.ticketQueue) {
+                    if (t.getReporter().toLowerCase().contains(name)) {
+                        // if the description contains the search string, add it to searchResults list
+                        searchResults.add(t);
+                    }
+                } // end for each
+
+                if (searchResults.isEmpty()) {
+                    // if nothing was found, tell the user that.
+                    JOptionPane.showMessageDialog(OptionsMenu.this, "No matches found!");
+                } else {
+                    // update the list of tickets with matches
+                    OptionsMenu.this.ticketListModel.clear();
+                    for (Ticket result : searchResults) {
+                        OptionsMenu.this.ticketListModel.addElement(result);
+                    }
+                } // end if-else
             }
         });
     }
