@@ -12,8 +12,7 @@ import java.util.ArrayList;
  */
 public class OptionsMenu extends JFrame {
     private JButton enterATroubleTicketButton;
-    private JButton deleteByTicketIDButton;
-    private JButton deleteByIssueButton;
+    private JButton searchByIssueButton;
     private JButton searchByNameButton;
     private JButton displayTicketsButton;
     private JButton quitButton;
@@ -108,6 +107,38 @@ public class OptionsMenu extends JFrame {
                         OptionsMenu.this.ticketListModel.addElement(result);
                     }
                 } // end if-else
+            }
+        });
+        searchByIssueButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                OptionsMenu.this.deleteSelectedTicketButton.setEnabled(true);
+                // modified from code in TicketManager
+                ArrayList<Ticket> searchResults = new ArrayList<Ticket>();
+                String name = OptionsMenu.this.searchByNameTextField.getText().toLowerCase();
+                for (Ticket t: TicketManager.ticketQueue) {
+                    if (t.getDescription().toLowerCase().contains(name)) {
+                        // if the description contains the search string, add it to searchResults list
+                        searchResults.add(t);
+                    }
+                } // end for each
+
+                if (searchResults.isEmpty()) {
+                    // if nothing was found, tell the user that.
+                    JOptionPane.showMessageDialog(OptionsMenu.this, "No matches found!");
+                } else {
+                    // update the list of tickets with matches
+                    OptionsMenu.this.ticketListModel.clear();
+                    for (Ticket result : searchResults) {
+                        OptionsMenu.this.ticketListModel.addElement(result);
+                    }
+                } // end if-else
+            }
+        });
+        enterATroubleTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                NewTicket enterTicket = new NewTicket();
             }
         });
     }
