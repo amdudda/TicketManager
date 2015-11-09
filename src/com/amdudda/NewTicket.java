@@ -34,7 +34,7 @@ public class NewTicket extends JFrame {
                 Ticket toAdd = new Ticket(descript, priInt, rept, LocalDateTime.now());
                 // add info as a new ticket in ticketQueue
                 TicketManager.ticketQueue.add(toAdd);
-                // for now, all this does is close the window
+                // close the window
                 dispose();
             }
         });
