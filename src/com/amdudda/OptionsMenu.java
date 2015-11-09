@@ -18,6 +18,7 @@ public class OptionsMenu extends JFrame {
     private JPanel rootPanel;
     private JTextField searchByNameTextField;
     private JList<Ticket> TicketList;
+    private JButton deleteSelectedTicketButton;
 
     private DefaultListModel<Ticket> ticketListModel;
 
@@ -42,11 +43,24 @@ public class OptionsMenu extends JFrame {
         displayTicketsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // want to list all existing tickets for now, will refine later
+                // want to list all open tickets for now, will refine later
+                OptionsMenu.this.ticketListModel.clear();
                 for (Ticket t : TicketManager.ticketQueue) {
-                    System.out.println(t);
                     OptionsMenu.this.ticketListModel.addElement(t);
                 }
+            }
+        });
+
+        deleteSelectedTicketButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // this deletes the selected ticket from TicketList
+                Ticket toDelete = OptionsMenu.this.TicketList.getSelectedValue();
+                // Move to resolved queue
+                TicketManager.ticketQueue.remove(toDelete);
+                TicketManager.resolvedTickets.add(toDelete);
+                // and update the display
+                OptionsMenu.this.ticketListModel.removeElement(toDelete);
             }
         });
     }
