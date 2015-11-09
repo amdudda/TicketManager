@@ -2,6 +2,7 @@ package com.amdudda;
 
 import javax.swing.*;
 import javax.swing.text.html.Option;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,6 +20,7 @@ public class OptionsMenu extends JFrame {
     private JTextField searchByNameTextField;
     private JList<Ticket> TicketList;
     private JButton deleteSelectedTicketButton;
+    private JButton displayResolvedTicketsButton;
 
     private DefaultListModel<Ticket> ticketListModel;
 
@@ -28,6 +30,7 @@ public class OptionsMenu extends JFrame {
         pack();
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setVisible(true);
+        setSize(new Dimension(800, 500));
 
         ticketListModel = new DefaultListModel<Ticket>();
         TicketList.setModel(ticketListModel);
@@ -44,6 +47,7 @@ public class OptionsMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // want to list all open tickets for now, will refine later
+                OptionsMenu.this.deleteSelectedTicketButton.setEnabled(true);
                 OptionsMenu.this.ticketListModel.clear();
                 for (Ticket t : TicketManager.ticketQueue) {
                     OptionsMenu.this.ticketListModel.addElement(t);
@@ -54,13 +58,26 @@ public class OptionsMenu extends JFrame {
         deleteSelectedTicketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // this deletes the selected ticket from TicketList
-                Ticket toDelete = OptionsMenu.this.TicketList.getSelectedValue();
-                // Move to resolved queue
-                TicketManager.ticketQueue.remove(toDelete);
-                TicketManager.resolvedTickets.add(toDelete);
-                // and update the display
-                OptionsMenu.this.ticketListModel.removeElement(toDelete);
+                    // this deletes the selected ticket from TicketList
+                    Ticket toDelete = OptionsMenu.this.TicketList.getSelectedValue();
+                    // Move to resolved queue
+                    TicketManager.ticketQueue.remove(toDelete);
+                    TicketManager.resolvedTickets.add(toDelete);
+                    // and update the display
+                    OptionsMenu.this.ticketListModel.removeElement(toDelete);
+
+            }
+        });
+        displayResolvedTicketsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // turn off ability to delete tickets
+                OptionsMenu.this.deleteSelectedTicketButton.setEnabled(false);
+                // clear the list of tickets
+                OptionsMenu.this.ticketListModel.clear();
+                for (Ticket t : TicketManager.resolvedTickets) {
+                    OptionsMenu.this.ticketListModel.addElement(t);
+                }
             }
         });
     }
