@@ -133,7 +133,7 @@ public class TicketManager {
         }
     }
 
-    private static void writeTicketData() throws IOException {
+    protected static void writeTicketData() throws IOException {
         // writes ticket data to files at program close
         // need to consider how to store it so we can read the data in again later.
         // info on date time extraction adduced from https://docs.oracle.com/javase/8/docs/api/index.html?java/time/LocalDate.html

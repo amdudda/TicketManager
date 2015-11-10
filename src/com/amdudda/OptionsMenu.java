@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -23,7 +24,7 @@ public class OptionsMenu extends JFrame {
 
     protected DefaultListModel<Ticket> ticketListModel;
 
-    public OptionsMenu() {
+    public OptionsMenu() throws IOException {
         super("Options Menu");
         setContentPane(rootPanel);
         pack();
@@ -41,6 +42,11 @@ public class OptionsMenu extends JFrame {
         quitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                try {
+                    TicketManager.writeTicketData();
+                } catch (Exception ex) {
+                    System.out.println("Whoops, something went wrong: " + ex);
+                }
                 System.exit(0);
             }
         });
@@ -87,7 +93,7 @@ public class OptionsMenu extends JFrame {
                 // modified from code in TicketManager
                 ArrayList<Ticket> searchResults = new ArrayList<Ticket>();
                 String name = OptionsMenu.this.searchByNameTextField.getText().toLowerCase();
-                for (Ticket t: TicketManager.ticketQueue) {
+                for (Ticket t : TicketManager.ticketQueue) {
                     if (t.getReporter().toLowerCase().contains(name)) {
                         // if the description contains the search string, add it to searchResults list
                         searchResults.add(t);
@@ -113,7 +119,7 @@ public class OptionsMenu extends JFrame {
                 // modified from code in TicketManager
                 ArrayList<Ticket> searchResults = new ArrayList<Ticket>();
                 String name = OptionsMenu.this.searchByNameTextField.getText().toLowerCase();
-                for (Ticket t: TicketManager.ticketQueue) {
+                for (Ticket t : TicketManager.ticketQueue) {
                     if (t.getDescription().toLowerCase().contains(name)) {
                         // if the description contains the search string, add it to searchResults list
                         searchResults.add(t);
