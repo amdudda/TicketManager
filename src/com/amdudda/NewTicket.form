@@ -30,17 +30,6 @@
           <text value="Priority:"/>
         </properties>
       </component>
-      <component id="8cef6" class="javax.swing.JTextField" binding="priorityTextField">
-        <constraints>
-          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
-            <preferred-size width="150" height="-1"/>
-          </grid>
-          <gridbag weightx="0.0" weighty="0.0"/>
-        </constraints>
-        <properties>
-          <background color="-23328"/>
-        </properties>
-      </component>
       <component id="2c4d2" class="javax.swing.JLabel">
         <constraints>
           <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
@@ -93,6 +82,13 @@
           <foreground color="-23328"/>
           <text value="Add Ticket to System"/>
         </properties>
+      </component>
+      <component id="6e2dd" class="javax.swing.JComboBox" binding="priorityComboBox">
+        <constraints>
+          <grid row="1" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="2" anchor="8" fill="1" indent="0" use-parent-layout="false"/>
+          <gridbag weightx="0.0" weighty="0.0"/>
+        </constraints>
+        <properties/>
       </component>
     </children>
   </grid>
