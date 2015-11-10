@@ -58,7 +58,7 @@
           <gridbag weightx="0.0" weighty="0.0"/>
         </constraints>
         <properties>
-          <text value="Delete Selected Ticket"/>
+          <text value="Update Selected Ticket"/>
         </properties>
       </component>
       <component id="84722" class="javax.swing.JButton" binding="displayResolvedTicketsButton" default-binding="true">

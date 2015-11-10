@@ -1,7 +1,6 @@
 package com.amdudda;
 
 import javax.swing.*;
-import javax.swing.text.html.Option;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +17,11 @@ public class OptionsMenu extends JFrame {
     private JButton quitButton;
     private JPanel rootPanel;
     private JTextField searchByNameTextField;
-    private JList<Ticket> TicketList;
+    protected JList<Ticket> TicketList;
     private JButton deleteSelectedTicketButton;
     private JButton displayResolvedTicketsButton;
 
-    private DefaultListModel<Ticket> ticketListModel;
+    protected DefaultListModel<Ticket> ticketListModel;
 
     public OptionsMenu() {
         super("Options Menu");
@@ -34,6 +33,10 @@ public class OptionsMenu extends JFrame {
 
         ticketListModel = new DefaultListModel<Ticket>();
         TicketList.setModel(ticketListModel);
+        for (Ticket t : TicketManager.ticketQueue) {
+            OptionsMenu.this.ticketListModel.addElement(t);
+        }
+        OptionsMenu.this.TicketList.setSelectedIndex(0);
 
         quitButton.addActionListener(new ActionListener() {
             @Override
@@ -58,14 +61,8 @@ public class OptionsMenu extends JFrame {
         deleteSelectedTicketButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                    // this deletes the selected ticket from TicketList
-                    Ticket toDelete = OptionsMenu.this.TicketList.getSelectedValue();
-                    // Move to resolved queue
-                    TicketManager.ticketQueue.remove(toDelete);
-                    TicketManager.resolvedTickets.add(toDelete);
-                    // and update the display
-                    OptionsMenu.this.ticketListModel.removeElement(toDelete);
-
+                // opens window to update a ticket
+                UpdateTicket updateTicket = new UpdateTicket(OptionsMenu.this.TicketList.getSelectedValue());
             }
         });
 

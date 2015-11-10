@@ -62,6 +62,21 @@ public class Ticket {
 
     protected String getReporter() { return this.reporter; }
 
+    protected LocalDateTime getDateReported() { return this.dateReported; }
+
+    // add'l setters
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+
+    public void setReporter(String reporter) {
+        this.reporter = reporter;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     // new getters & setters for resolved ticket values
     protected LocalDateTime getDateResolved() {
         return dateResolved;
@@ -93,7 +108,7 @@ public class Ticket {
         String f_date = "" + dR.getMonth() + "-" + dR.getDayOfMonth() + "-" + dR.getYear();
         f_date += " " + dateReported.getHour() + ":" + dateReported.getMinute();*/
         String resOut, resDt;
-        if (this.resolution == null) {
+        if (this.resolution == null || this.resolution.isEmpty()) {
             // this allows for future possibility of previously resolved tickets being reopened.
             resDt = "n/a";
             resOut = "UNRESOLVED";

@@ -27,7 +27,7 @@ public class TicketManager {
         readTicketData();
 
         OptionsMenu optionsMenu = new OptionsMenu();
-
+/*  Don't need this stuff now that we have a GUI
         boolean keepgoing = true;
         int task;
         while (keepgoing) {
@@ -89,7 +89,7 @@ public class TicketManager {
 
         } // end while-keepgoing
 
-        scan.close();
+        scan.close();*/
     }
 
     private static void readTicketData() throws IOException {
